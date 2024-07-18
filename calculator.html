@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="btn operator" data-operator="+">+</button>
+            <button class="btn operator" data-operator="-">-</button>
+            <button class="btn operator" data-operator="*">×</button>
+            <button class="btn operator" data-operator="/">÷</button>
+            <button class="btn number" data-number="7">7</button>
+            <button class="btn number" data-number="8">8</button>
+            <button class="btn number" data-number="9">9</button>
+            <button class="btn number" data-number="4">4</button>
+            <button class="btn number" data-number="5">5</button>
+            <button class="btn number" data-number="6">6</button>
+            <button class="btn number" data-number="1">1</button>
+            <button class="btn number" data-number="2">2</button>
+            <button class="btn number" data-number="3">3</button>
+            <button class="btn number" data-number="0">0</button>
+            <button class="btn number" data-number=".">.</button>
+            <button class="btn clear" id="clear">C</button>
+            <button class="btn equal" id="equal">=</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+<style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.calculator {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    width: 320px; /* Adjusted for better spacing */
+    background-color: #000;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.display {
+    background-color: #000;
+    color: #fff;
+    text-align: right;
+    padding: 20px;
+    font-size: 2rem;
+    border-bottom: 1px solid #444;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.btn {
+    background-color: #444;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 60px; /* Fixed width to make buttons circular */
+    height: 60px; /* Fixed height to make buttons circular */
+    margin: auto; /* Centering the buttons */
+}
+
+.btn.operator {
+    background-color: #555;
+}
+
+.btn.equal {
+    background-color: #ffa500;
+    width: 60px; /* Fixed width to make button circular */
+    height: 60px; /* Fixed height to make button circular */
+}
+
+.btn.clear {
+    background-color: #d32f2f;
+}
+
+.btn:hover {
+    background-color: #666;
+}
+
+.btn.operator:hover {
+    background-color: #777;
+}
+
+.btn.equal:hover {
+    background-color: #ff8c00;
+}
+
+.btn.clear:hover {
+    background-color: #e53935;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('.btn');
+    let currentInput = '';
+    let previousInput = '';
+    let operator = '';
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const { number, operator: op } = this.dataset;
+
+            if (number) {
+                if (currentInput.includes('.') && number === '.') return;
+                currentInput += number;
+                display.textContent = currentInput;
+            } else if (op) {
+                if (currentInput === '') return;
+                if (previousInput !== '') {
+                    calculate();
+                }
+                operator = op;
+                previousInput = currentInput;
+                currentInput = '';
+            } else if (this.id === 'equal') {
+                if (currentInput === '' || previousInput === '') return;
+                calculate();
+                operator = '';
+            } else if (this.id === 'clear') {
+                currentInput = '';
+                previousInput = '';
+                operator = '';
+                display.textContent = '0';
+            }
+        });
+    });
+
+    function calculate() {
+        let result;
+        const prev = parseFloat(previousInput);
+        const curr = parseFloat(currentInput);
+
+        if (isNaN(prev) || isNaN(curr)) return;
+
+        switch (operator) {
+            case '+':
+                result = prev + curr;
+                break;
+            case '-':
+                result = prev - curr;
+                break;
+            case '*':
+                result = prev * curr;
+                break;
+            case '/':
+                result = prev / curr;
+                break;
+            default:
+                return;
+        }
+
+        currentInput = result;
+        previousInput = '';
+        display.textContent = result;
+    }
+});
+</script>
