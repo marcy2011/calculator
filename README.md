@@ -3,6 +3,6 @@ View source and preview on https://renadeveloper.altervista.org/calcolatrice-mod
 # Download
 Download the Calculator WebApp on https://renastore.altervista.org/calculator.html
 
-<a href="https://renastore.altervista.org/qrcode-maker.html">
+<a href="https://renastore.altervista.org/calculator.html">
     <img src="https://renadeveloper.altervista.org/downloadrs.png" alt="Download On The Rena Store" width="200">
 </a>
